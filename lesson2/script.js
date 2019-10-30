@@ -4,7 +4,8 @@
 
 let money,
   time,
-  countOfExpensies = 2;
+  countOfExpensies = 2,
+  countOfOptExpensies = 3;
 
 // functions
 
@@ -17,6 +18,10 @@ function start() {
 
 function setExpense() {
   return prompt("Введите обязательную " + "статью расходов в этом месяце", "");
+}
+
+function setOptExpense() {
+  return prompt("Статья необязательных расходов?");
 }
 
 function setAmount() {
@@ -42,6 +47,40 @@ function addExpensies() {
   }
 }
 
+function checkSavings() {
+  if (appData.savings == true) {
+    let save = +prompt("Какова сумма накоплений?"),
+      percent = +prompt("Под какой процент?");
+
+    appData.monthIncome = ((save / 100 / 12) * percent).toFixed(2);
+    alert("Доход в месяц с вашего депозита " + appData.monthIncome);
+  }
+}
+
+function detectDayBudget() {
+  appData.moneyPerDay = (appData.budget / 30).toFixed(2);
+  alert("Ежедневный бюджет: " + appData.moneyPerDay);
+}
+
+function detectLevel() {
+  if (appData.moneyPerDay < 100) {
+    console.log("Низкий уровень дохода");
+  } else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
+    console.log("Средний уровень дохода");
+  } else if (appData.moneyPerDay > 2000) {
+    console.log("Высокий уровень дохода");
+  } else {
+    console.log("Ошибка расчета дохода");
+  }
+}
+
+function chooseOptExpenses() {
+  let optionalExpenses = {};
+  for (let i = 0; i < countOfOptExpensies; i++) {
+    optionalExpenses[i + 1] = setOptExpense();
+  }
+  appData.optionalExpenses=optionalExpenses;
+}
 // start script
 
 start();
@@ -79,28 +118,10 @@ for (let i = 0; i < countOfExpensies; i++) {
 //     }
 // }while(i<countOfExpensies);
 
-appData.moneyPerDay = (appData.budget / 30).toFixed(2);
+detectDayBudget();
 
-alert("Ежедневный бюджет: " + appData.moneyPerDay);
+detectLevel();
 
-if (appData.moneyPerDay < 100) {
-  console.log("Низкий уровень дохода");
-} else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
-  console.log("Средний уровень дохода");
-} else if (appData.moneyPerDay > 2000) {
-  console.log("Высокий уровень дохода");
-} else {
-  console.log("Ошибка расчета дохода");
-}
-
-function checkSavings() {
-  if (appData.savings == true) {
-    let save = +prompt("Какова сумма накоплений?"),
-      percent = +prompt("Под какой процент?");
-
-    appData.monthIncome = ((save / 100 / 12) * percent).toFixed(2);
-    alert("Доход в месяц с вашего депозита " + appData.monthIncome);
-  }
-}
+chooseOptExpenses();
 
 checkSavings();
